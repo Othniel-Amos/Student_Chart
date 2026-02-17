@@ -13,6 +13,14 @@
         </ul>
     </div>
     <p>And much more... take a look at the rest of the options on the nav bar and explore the app :P</p>
+    <div class="card" style="width: 18rem;">
+    <img src= "{{ url_for('static', filename='images/green_icon.jpg') }}" class="card-img-top" style="height: 150px; object-fit: scale-down;" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">Add A Student</h5>
+        <p class="card-text">Click here to head out and fill your classroom</p>
+        <a href="/add" class="btn btn-success">Add</a>
+    </div>
+</div>
 </div>
 
 {% endblock %}

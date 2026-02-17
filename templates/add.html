@@ -1,0 +1,54 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div style="text-align: center" >
+    <h1>Add a Student</h1> <br>
+    <hr>
+</div>
+
+<div class="container">
+    <form method="post" action="/add" class="row g-3">
+    <div class="col-md-6">
+        <label class="form-label">Firstname</label>
+        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="John"> <!--Firstname-->
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Lastname</label>
+        <input type="text" class="form-control" name="lastname" placeholder="Smith"> <!--Lastname-->
+    </div>
+    <div class="col-12">
+        <label class="form-label">Grade Selection</label>
+        <select name="grade" class="form-select" aria-label="Default select example"> <!--For grades-->
+            {%for grade in grades%}
+            <option value="{{grade}}">Grade {{grade}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Class Selection</label>
+        {% for class in classes %}
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="class" id="radio{{ loop.index }}" value="{{class}}">
+            <label class="form-check-label" for="radio{{ loop.index }}">{{class}}</label>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-12">
+        <label class="form-label">Subject Selection</label>
+        <div  class="form-check form-check-inline"> <!--For grades-->
+            {% for subject in subjects %}
+                <div class="form-check form-check-inline">
+                    <input name="subjects" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="{{subject}}">
+                    <label class="form-check-label" for="inlineCheckbox1">{{subject}}</label>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+</div>
+{% endblock %}

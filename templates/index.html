@@ -21,7 +21,7 @@
               <a class="nav-link active" aria-current="page" href="/homepage">Homepage</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Add Student</a>
+              <a class="nav-link" href="/add">Add Student</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Remove Student</a>
@@ -33,7 +33,8 @@
         </div>
       </div>
     </nav>
-     {% with messages = get_flashed_messages(with_categories=true)%}
+    <div>
+    {% with messages = get_flashed_messages(with_categories=true)%}
         {% if messages %}
             {% for message in messages %}
             <div class="alert alert-primary alert-dismissible fade show" role="alert">
@@ -44,6 +45,7 @@
         {% endif %}
     {% endwith %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    </div> <!--TO SHOW FLASHED MESSAGES-->
     </div>
     {% block content %}{% endblock %}
 
