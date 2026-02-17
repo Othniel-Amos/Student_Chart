@@ -85,7 +85,7 @@ def add():
         grade = request.form.get("grade")
         subjects = request.form.getlist("subjects")
         myclass = request.form.get("class")
-        print("\n\n\n\n\n\n\n\n\n\n")
+        print("\n\n\n\n\n\n\n\n\n\n") #Just to see on the cmd terminal
         print(subjects)
         valid, to_be_flashed = validate(fname,lname,grades,grade,og_subjects,subjects,classes,myclass)
         flash(to_be_flashed)
