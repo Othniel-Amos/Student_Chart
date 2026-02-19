@@ -52,3 +52,36 @@ def validate(fname,lname,og_grades,grade,og_subjects,subjects,og_classes,myclass
         return False,"Invalid class received"
 
     return True,f"{fname} was added to the database"
+
+def safely_add_subjects(subjects):
+    num_subjects = len(subjects)
+    counter = 0
+    placeholder = ""
+    for _ in subjects:
+        counter+=1
+        if counter == num_subjects:
+            placeholder+="?"
+        else:
+            placeholder+="?,"
+
+    return placeholder
+
+def update_subject_database():
+    subjects = get_subjects()
+    subjects.sort()
+
+    with get_db() as con:
+        c = con.cursor()
+
+        for subject in subjects:
+            try:
+                c.execute('''
+                    INSERT INTO subjects (subjectname) VALUES (?) 
+                    ''',(subject,))
+            except sqlite3.IntegrityError:
+                continue
+
+        con.commit()
+
+
+

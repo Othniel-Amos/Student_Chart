@@ -1,3 +1,5 @@
+import sqlite3
+
 from flask import Flask,render_template,flash,redirect,request,session,url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from functions import *
@@ -14,6 +16,7 @@ def login_needed(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return wrapped_function
+update_subject_database() #Incase the user bothers to change the json file the code shouldn't break
 
 @app.route("/")
 def temp():
@@ -88,7 +91,47 @@ def add():
         print("\n\n\n\n\n\n\n\n\n\n") #Just to see on the cmd terminal
         print(subjects)
         valid, to_be_flashed = validate(fname,lname,grades,grade,og_subjects,subjects,classes,myclass)
-        flash(to_be_flashed)
+
+        grade = int(grade)
+
+
+        if valid:
+            try:
+                with get_db() as con:
+                    c = con.cursor()
+                    #See if another student exists with these exact same details
+                    #Thanks to the unique constraint it shouldn't be possible to have two students with the exact same details
+                    c.execute('''
+                        INSERT INTO students (firstname,lastname,grade,class,teacherID) VALUES 
+                        (?,?,?,?,?)''', (fname, lname, grade, myclass, session["user_id"]))
+                    student_id = c.lastrowid
+                    con.commit()
+            except sqlite3.IntegrityError:
+                flash(f"{fname} is already registered as a student")
+            else: #Adds subject field
+                with get_db() as con:
+                    c = con.cursor()
+                    placeholder = safely_add_subjects(subjects)
+
+
+                    c.execute(f'''
+                        SELECT subjectID FROM subjects WHERE subjectname IN ({placeholder})
+                        ''',subjects)
+                    subject_id_rows = c.fetchall() #ID rows of subjects in tuples
+
+
+                    for subject_id in subject_id_rows:
+                        subject_id = int(subject_id[0])
+                        c.execute('''
+                            INSERT INTO students_subjects (studentID,subjectID) 
+                            VALUES (?,?)
+                        ''',(student_id,subject_id))
+
+                    con.commit()
+
+                    flash(to_be_flashed) #Flashes that name has been added to the database
+        else:
+            flash(to_be_flashed) #Something in the student's field is invalid
 
         return redirect("/add")
 
