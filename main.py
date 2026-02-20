@@ -20,19 +20,68 @@ update_subject_database() #Incase the user bothers to change the json file the c
 
 @app.route("/")
 def temp():
-    return redirect("/index")
+    return redirect("/homepage")
 
 @app.route("/index")
 @login_needed
 def index():
-    return render_template("index.html")
+    return redirect("/homepage")
+
+@app.route("/register",methods=["GET","POST"])
+def register():
+    if "user_id" in session:
+        flash("Need to logout to register an account")
+        return redirect("/homepage")
+
+    if request.method == "GET":
+        return render_template("register.html")
+    else:
+        username = request.form.get("username").strip()
+        password = request.form.get("password").strip()
+
+        valid_p, to_be_flashed_p = validate_password(password)
+        valid_u, to_be_flashed_u = validate_username(username)
+
+        if valid_p and valid_u:
+            print(username, password)
+            with get_db() as con:
+                c = con.cursor()
+                password_hash = generate_password_hash(password)
+
+                c.execute('SELECT password FROM users WHERE username = ?', (username,))
+
+
+                if not c.fetchall(): #If it returned an empty list it means no one has that username
+                    c.execute("INSERT INTO users (username,password) VALUES (?,?)",(username,password_hash))
+                    c.execute('SELECT teacherID FROM users WHERE username = ?', (username,))
+                    teacher_id = int(c.fetchone()[0])
+
+                    session["user_id"] = teacher_id
+                    flash("Login was successful")
+                    return redirect("/homepage")
+                else:
+                    flash(f"Username: {username} already exists")
+                    return redirect("/register")
+
+
+
+        else:
+            flash(to_be_flashed_u)
+            flash(to_be_flashed_p)
+            return redirect("/register")
+
+
+
+
+
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         if "user_id" in session:
             flash("Already logged in")
-            return redirect("/index")
+            return redirect("/homepage")
         else:
             return render_template("login.html")
 
@@ -62,7 +111,7 @@ def login():
 
             session["user_id"] = teacher_id
             flash("Login was successful")
-            return redirect("/index")
+            return redirect("/homepage")
         else: # Else is not really needed but added for reading clarity
             flash("Username or password is incorrect")
             return redirect("/login")
@@ -143,6 +192,16 @@ def view(): # allows for viewing of the database
         print("-|" * 16)
         print(students)
         print("-|" * 16)
+
+        if students in [1,2]:
+            flash("You don't have a students to view, try add some")
+            return redirect("/add")
+
         return render_template("view.html",students=students)
 
-
+@app.route("/logout")
+@login_needed
+def logout():
+    session.pop("user_id",None)
+    flash("Successfully logged out")
+    return redirect("/login")

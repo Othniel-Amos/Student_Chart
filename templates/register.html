@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="static/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>Register Page</title>
     <link href="{{ url_for('static', filename='images/favicon.ico') }}" rel="icon">
 </head>
 <body>
@@ -25,9 +25,9 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <form action="/login" method="post" >     <h2>Login Page</h2>
+    <form action="/register" method="post" >     <h2>Register Page</h2>
         <hr>
-        <h4>Please log in</h4>
+        <h4>Please register your account</h4>
 
         <div class="container">
         <div class="input-group mb-3">
@@ -35,18 +35,13 @@
             <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" name="password" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1">
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">Register</button>
         </div>
     </form>
     </div>
 
-    <br><br>
-    <div style = "text-align: center" class="container">
-    <p><strong>Don't have an account ?</strong></p>
-    <a class="btn btn-outline-secondary" href="/register" role="button">Register now</a>
-    </div>
 
 
 

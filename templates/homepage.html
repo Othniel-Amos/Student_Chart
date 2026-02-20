@@ -1,5 +1,9 @@
 {% extends "index.html" %}
 
+{% block title %}
+    Homepage
+{% endblock %}
+
 {% block content %}
 <div style="text-align: center" >
     <h1>Welcome to the homepage</h1> <br>
@@ -7,18 +11,31 @@
     <hr>
     <div class="center-flex">
         <ul>
-            <li>Order their <strong>grades</strong></li>
-            <li>Sort by <strong>classes</strong></li>
+            <li>Update the number of <strong>students</strong></li>
+            <li>View by <strong>classes</strong></li>
             <li>Add a <strong>student</strong></li>
         </ul>
     </div>
     <p>And much more... take a look at the rest of the options on the nav bar and explore the app :P</p>
-    <div class="card" style="width: 18rem;">
+
+    <div class="row">
+
+    <div class="card col-sm-6 mb-3 mb-sm-0" >
     <img src= "{{ url_for('static', filename='images/green_icon.jpg') }}" class="card-img-top" style="height: 150px; object-fit: scale-down;" alt="...">
     <div class="card-body">
         <h5 class="card-title">Add A Student</h5>
         <p class="card-text">Click here to head out and fill your classroom</p>
         <a href="/add" class="btn btn-success">Add</a>
+    </div>
+    </div>
+
+    <div class="card col-sm-6" >
+    <img src= "{{ url_for('static', filename='images/eye.png') }}" class="card-img-top" style="height: 150px; object-fit: scale-down;" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">View Students</h5>
+        <p class="card-text">Click here to view all of your students (only if you have any)</p>
+        <a href="/view" class="btn btn-warning">View</a>
+    </div>
     </div>
 </div>
 </div>

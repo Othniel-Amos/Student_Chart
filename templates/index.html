@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="static/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="UTF-8">
-    <title>Homepage</title>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{{ url_for('static', filename='images/favicon.ico') }}" rel="icon">
 </head>
 <body>
     <div>
@@ -24,10 +25,10 @@
               <a class="nav-link" href="/add">Add Student</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Remove Student</a>
+              <a class="nav-link" href="/view">View</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/view">View</a>
+              <a class="nav-link" href="/logout">Logout</a>
             </li>
           </ul>
         </div>

@@ -127,6 +127,63 @@ def display_students(user_id):
 
     return students_db
 
+def validate_password(password): #In hindsight probably not the best way to check if a password is valid
+    if len(password) < 8:
+        return False, "Password must be longer than 8 characters"
+
+    if len(password) > 24:
+        return False, "Password must be less than 25 characters"
+
+    for letter in password:
+        if letter.islower():
+            break
+    else:
+        return False, "Password must contain at least one lowercase character"
+
+    for letter in password:
+        if letter.isupper():
+            break
+    else:
+        return False, "Password must contain at least one uppercase character"
+
+    for letter in password:
+        if letter.isdigit():
+            break
+    else:
+        return False, "Password must contain at least one numerical digit"
+
+    for letter in password:
+        if not letter.isalnum():
+            break
+    else:
+        return False, "Password must contain at least one special character"
+
+    for letter in password:
+        if letter.isspace():
+            return False, "Password must not have any spaces"
+
+
+
+
+    return True, "Valid password"
+
+def validate_username(username):
+    if len("username") < 7:
+        return False, "Username is too short (must be longer than 6 characters)"
+
+    if len("username") >= 25:
+        return False, "Username is too long must be shorter than 25 characters"
+
+    for letter in username:
+        if letter.isspace():
+            return False, "Username must not have any spaces"
+
+
+
+    return True, "Valid username"
+
+
+
 
 
 
