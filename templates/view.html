@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div style="text-align: center" >
+    <h1>My Students</h1> <br>
+    <h4>Look down below to view all of your students...</h4>
+    <hr>
+</div>
+
+<div class="container">
+    <table class="table table-striped table-bordered rounded-table table-hover table-info">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Grade</th>
+                <th>Class</th>
+                <th>Subjects</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                {% set just_student = student[0] %}
+                <!-- Prints out first half of student -->
+                {% for student_var in just_student %}
+                    <td>{{student_var}}</td>
+                {% endfor %}
+                {% set just_subjects = student [1] %}
+                <td>
+                    {% for subject in just_subjects %}
+                        <div>{{subject}} <br></div>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

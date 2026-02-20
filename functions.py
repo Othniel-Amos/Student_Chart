@@ -28,7 +28,7 @@ def get_classes():
 def validate(fname,lname,og_grades,grade,og_subjects,subjects,og_classes,myclass):
     try:
         grade = int(grade)
-    except:
+    except ValueError:
         return False, "Invalid grade received"
 
     if grade not in og_grades:
@@ -82,6 +82,51 @@ def update_subject_database():
                 continue
 
         con.commit()
+
+def display_students(user_id):
+    with get_db() as con:
+        c = con.cursor()
+        c.execute('''
+            SELECT studentID,firstname,lastname,grade,class
+            FROM students WHERE teacherID = ?;
+        ''',(user_id,))
+
+        students_rows = c.fetchall()
+
+        if not students_rows: #If fetchall returned nothing it means the teacher has not students
+            return 1
+
+        students_db = [] #Should be a 2D list when finished
+        temp_students_db = []
+
+        for student in students_rows:
+            temp_students_db.append(list(student))
+            student_id = int(student[0])
+
+            c.execute('''
+            SELECT subjectname FROM subjects WHERE subjectID IN 
+            (SELECT subjectID FROM students_subjects WHERE studentID = ?);
+            ''',(student_id,))
+
+            subject_names = c.fetchall()
+
+            if not subject_names: #Added this though it should be impossible for this to even happen
+                return 2
+
+            subject_names = list(subject_names)
+            new_subject_names = []
+            for subject in subject_names:
+                subject = subject[0]
+                new_subject_names.append(subject)
+
+            temp_students_db.append(new_subject_names)
+
+            students_db.append(temp_students_db)
+
+            temp_students_db = [] #Empties temp_students_db for next iteration
+
+    return students_db
+
 
 
 

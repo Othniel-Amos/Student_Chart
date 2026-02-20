@@ -75,7 +75,7 @@ def homepage():
 @app.route("/add", methods=["GET","POST"])
 @login_needed
 def add():
-    og_subjects = get_subjects()
+    og_subjects = get_subjects() #og stands for original
     og_subjects.sort()
     grades = get_grades()
     classes = get_classes()
@@ -135,5 +135,14 @@ def add():
 
         return redirect("/add")
 
+@app.route("/view", methods=["GET","POST"])
+@login_needed
+def view(): # allows for viewing of the database
+    if request.method == "GET":
+        students = display_students(session["user_id"])
+        print("-|" * 16)
+        print(students)
+        print("-|" * 16)
+        return render_template("view.html",students=students)
 
 
